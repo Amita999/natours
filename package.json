@@ -1,0 +1,23 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "Practise project of learning Node, Express, and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amita999/natours.git"
+  },
+  "author": "Amita Jethani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Amita999/natours/issues"
+  },
+  "homepage": "https://github.com/Amita999/natours#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
