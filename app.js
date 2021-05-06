@@ -2,7 +2,14 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 
+//middeware
 app.use(express.json());
+//creating our own middleware
+app.use((req, res, next) => {
+  console.log('Custom middleware to manipulate data');
+  req.requestTime = new Date().toISOString();
+  next();
+});
 
 const port = 3000;
 const tours = JSON.parse(
@@ -13,6 +20,7 @@ const getAllTours = (req, res) => {
   console.log('Inside the get tours API');
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours,
