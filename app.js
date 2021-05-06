@@ -75,8 +75,7 @@ app.get('/api/v1/tours/:id', (req, res) => {
 
 app.patch('/api/v1/tours/:id', (req, res) => {
   console.log('Inside the patch request');
-  const id = req.params.id * 1;
-  if (id > tours.length) {
+  if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
       message: 'Invalid ID',
