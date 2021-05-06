@@ -1,6 +1,12 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const morgan = require('morgan');
+
+const port = 3000;
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
+);
 
 //middeware
 app.use(express.json());
@@ -10,12 +16,10 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
+//using third party middleware
+app.use(morgan('dev'));
 
-const port = 3000;
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
-);
-
+//route handlers
 const getAllTours = (req, res) => {
   console.log('Inside the get tours API');
   res.status(200).json({
@@ -110,6 +114,7 @@ const deleteTour = (req, res) => {
 
 // app.delete('/api/v1/tours/:id', deleteTour);
 
+//Routes
 app.route('/api/v1/tours').get(getAllTours).post(createNewTour);
 
 app
@@ -118,6 +123,7 @@ app
   .patch(updateTour)
   .delete(deleteTour);
 
+//Starting server
 app.listen(port, () => {
   console.log('Listening to server');
 });
