@@ -1,10 +1,16 @@
 const express = require('express');
 const tourController = require('./../controllers/tourcontroller');
 const router = express.Router();
+//Param as a middleware to check whether an id exists or not
+router.param('id', tourController.checkId);
+
 router
   .route('/')
   .get(tourController.getAllTours)
-  .post(tourController.createNewTour);
+  .post(
+    tourController.checkbody,
+    tourController.createNewTour
+  );
 
 router
   .route('/:id')

@@ -5,6 +5,33 @@ const tours = JSON.parse(
   )
 );
 
+exports.checkId =
+  ('id',
+  (req, res, next, val) => {
+    console.log(
+      'ID for the API is in params middleware: ',
+      val
+    );
+    const id = req.params.id * 1;
+    if (id > tours.length) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Invalid ID',
+      });
+    }
+    next();
+  });
+
+exports.checkbody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Missing name or price',
+    });
+  }
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   console.log('Inside the get tours API');
   res.status(200).json({
@@ -44,12 +71,6 @@ exports.createNewTour = (req, res) => {
 exports.getTour = (req, res) => {
   console.log('Inside the get tours API by id');
   const id = req.params.id * 1;
-  if (id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
   const tour = tours.find((el) => el.id === id);
 
   res.status(200).json({
@@ -63,12 +84,7 @@ exports.getTour = (req, res) => {
 
 exports.updateTour = (req, res) => {
   console.log('Inside the patch request');
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -79,12 +95,7 @@ exports.updateTour = (req, res) => {
 
 exports.deleteTour = (req, res) => {
   console.log('Inside the delete request');
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
+
   res.status(204).json({
     status: 'success',
     data: null,
