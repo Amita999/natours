@@ -103,6 +103,41 @@ const deleteTour = (req, res) => {
   });
 };
 
+const getAllUsers = (req, res) => {
+  console.log('Inside the ger users request');
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is yet to be implemented',
+  });
+};
+const getUser = (req, res) => {
+  console.log('Inside the ger users request');
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is yet to be implemented',
+  });
+};
+const createUser = (req, res) => {
+  console.log('Inside the ger users request');
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is yet to be implemented',
+  });
+};
+const updateUser = (req, res) => {
+  console.log('Inside the ger users request');
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is yet to be implemented',
+  });
+};
+const deleteUser = (req, res) => {
+  console.log('Inside the ger users request');
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is yet to be implemented',
+  });
+};
 //Routes
 // app.get('/api/v1/tours', getAllTours);
 
@@ -122,6 +157,14 @@ app
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
+
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+
+app
+  .route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 //Starting server
 app.listen(port, () => {
