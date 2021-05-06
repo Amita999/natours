@@ -1,11 +1,18 @@
+const dotenv = require('dotenv');
+dotenv.config({ path: './config.env' });
 const express = require('express');
 const app = express();
 
+console.log(process.env);
 const morgan = require('morgan');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
-//middeware
+
+//TODO middeware
+if (process.env.NODE_ENV == 'development') {
+  app.use(morgan('dev'));
+}
 app.use(express.json());
 //creating our own middleware
 app.use((req, res, next) => {
@@ -16,7 +23,6 @@ app.use((req, res, next) => {
   next();
 });
 //using third party middleware
-app.use(morgan('dev'));
 
 //Routes
 //Make a middleware
