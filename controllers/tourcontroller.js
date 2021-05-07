@@ -25,15 +25,15 @@ const TourModel = require('./../models/tourModels');
 //     next();
 //   });
 
-exports.checkbody = (req, res, next) => {
-  if (!req.body.name || !req.body.price) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Missing name or price',
-    });
-  }
-  next();
-};
+// exports.checkbody = (req, res, next) => {
+//   if (!req.body.name || !req.body.price) {
+//     return res.status(400).json({
+//       status: 'fail',
+//       message: 'Missing name or price',
+//     });
+//   }
+//   next();
+// };
 
 exports.getAllTours = (req, res) => {
   console.log('Inside the get tours API');
@@ -47,18 +47,27 @@ exports.getAllTours = (req, res) => {
   });
 };
 
-exports.createNewTour = (req, res) => {
+exports.createNewTour = async (req, res) => {
   console.log('Inside the post tours API');
-  //   console.log(req.body);
+  //  const tour = new TourModel();
+  //  TourModel.save();
+  try {
+    const tourDocument = await TourModel.create(
+      req.body
+    );
 
-  (err) => {
     res.status(201).json({
       status: 'success',
       data: {
-        tour: newTour,
+        tour: tourDocument,
       },
     });
-  };
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Bad Request',
+    });
+  }
 };
 
 exports.getTour = (req, res) => {
