@@ -35,16 +35,48 @@ const TourModel = require('./../models/tourModels');
 //   next();
 // };
 
-exports.getAllTours = (req, res) => {
+exports.getAllTours = async (req, res) => {
   console.log('Inside the get tours API');
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    // results: tours.length,
-    // data: {
-    //   tours,
-    // },
-  });
+  try {
+    const tours = await TourModel.find();
+    res.status(200).json({
+      status: 'success',
+      requestedAt: req.requestTime,
+      results: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Bad Request',
+    });
+  }
+};
+
+exports.getTour = async (req, res) => {
+  console.log('Inside the get tours API by id');
+  // const id = req.params.id * 1;
+  // const tour = tours.find((el) => el.id === id);
+  try {
+    const tours = await TourModel.findById(
+      req.params.id
+    );
+    res.status(200).json({
+      status: 'success',
+      requestedAt: req.requestTime,
+      results: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Bad Request',
+    });
+  }
 };
 
 exports.createNewTour = async (req, res) => {
@@ -68,20 +100,6 @@ exports.createNewTour = async (req, res) => {
       message: 'Bad Request',
     });
   }
-};
-
-exports.getTour = (req, res) => {
-  console.log('Inside the get tours API by id');
-  // const id = req.params.id * 1;
-  // const tour = tours.find((el) => el.id === id);
-
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tour,
-    },
-  });
 };
 
 exports.updateTour = (req, res) => {
