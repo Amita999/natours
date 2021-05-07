@@ -14,6 +14,28 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => console.log('DB connected'));
+
+const tourschema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [
+      true,
+      'A tour must have a tour name',
+    ],
+    unique: true,
+  },
+  rating: {
+    type: Number,
+    default: 4.5,
+  },
+  price: {
+    type: Number,
+    required: [true, 'A tour must have a price'],
+  },
+});
+
+const tour = mongoose.model('Tour', tourschema);
+
 app.listen(port, () => {
   console.log('Listening to server');
 });

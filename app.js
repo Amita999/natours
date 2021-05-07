@@ -3,7 +3,6 @@ dotenv.config({ path: './config.env' });
 const express = require('express');
 const app = express();
 
-console.log(process.env);
 const morgan = require('morgan');
 
 const tourRouter = require('./routes/tourRoutes');
