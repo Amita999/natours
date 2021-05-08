@@ -49,9 +49,20 @@ exports.getAllTours = async (req, res) => {
     excludedQueryArray.forEach(
       (el) => delete reqQueryObj[el]
     );
-    console.log(reqQueryObj);
-    const toursQueryObj = TourModel.find(
+
+    //Advanced Filtering
+
+    let reqQueryObjString = JSON.stringify(
       reqQueryObj
+    );
+    console.log(reqQueryObj);
+    reqQueryObjString = reqQueryObjString.replace(
+      /\b(gt|gte|lt|lte)\b/g,
+      (match) => `$${match}`
+    );
+    console.log(reqQueryObjString);
+    const toursQueryObj = TourModel.find(
+      JSON.parse(reqQueryObjString)
     );
 
     const tours = await toursQueryObj;
