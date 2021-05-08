@@ -97,27 +97,47 @@ exports.createNewTour = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
+      message: err,
+    });
+  }
+};
+
+exports.updateTour = async (req, res) => {
+  console.log('Inside the patch request');
+  try {
+    const tourDocument = await TourModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour: tourDocument,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
       message: 'Bad Request',
     });
   }
 };
 
-exports.updateTour = (req, res) => {
-  console.log('Inside the patch request');
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: '<...Updated tour here...>',
-    },
-  });
-};
-
-exports.deleteTour = (req, res) => {
+exports.deleteTour = async (req, res) => {
   console.log('Inside the delete request');
-
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
+  try {
+    await TourModel.findByIdAndDelete(
+      req.params.id
+    );
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Bad Request',
+    });
+  }
 };
