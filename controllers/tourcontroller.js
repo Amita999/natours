@@ -67,6 +67,7 @@ exports.getAllTours = async (req, res) => {
     //Sorting
     // sort('price')
     if (req.query.sort) {
+      // sort('price ratingsAverage')
       const sortBy = req.query.sort
         .split(',')
         .join(' ');
@@ -75,7 +76,16 @@ exports.getAllTours = async (req, res) => {
     } else {
       query = query.sort('-createdAt');
     }
-    // sort('price ratingsAverage')
+    //Sending the selected fields or projecting
+
+    if (req.query.fields) {
+      const fields = req.query.fields
+        .split(',')
+        .join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
+    }
     const tours = await query;
     res.status(200).json({
       status: 'success',
