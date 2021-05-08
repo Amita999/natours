@@ -38,7 +38,23 @@ const TourModel = require('./../models/tourModels');
 exports.getAllTours = async (req, res) => {
   console.log('Inside the get tours API');
   try {
-    const tours = await TourModel.find();
+    //Filtering
+    const reqQueryObj = { ...req.query };
+    const excludedQueryArray = [
+      'page',
+      'sort',
+      'limit',
+      'fields',
+    ];
+    excludedQueryArray.forEach(
+      (el) => delete reqQueryObj[el]
+    );
+    console.log(reqQueryObj);
+    const toursQueryObj = TourModel.find(
+      reqQueryObj
+    );
+
+    const tours = await toursQueryObj;
     res.status(200).json({
       status: 'success',
       requestedAt: req.requestTime,
