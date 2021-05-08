@@ -39,7 +39,7 @@ exports.getAllTours = async (req, res) => {
   console.log('Inside the get tours API');
   try {
     //Filtering
-    const reqQueryObj = { ...req.query };
+    let query = { ...req.query };
     const excludedQueryArray = [
       'page',
       'sort',
@@ -47,25 +47,34 @@ exports.getAllTours = async (req, res) => {
       'fields',
     ];
     excludedQueryArray.forEach(
-      (el) => delete reqQueryObj[el]
+      (el) => delete query[el]
     );
 
     //Advanced Filtering
 
-    let reqQueryObjString = JSON.stringify(
-      reqQueryObj
-    );
-    console.log(reqQueryObj);
+    let reqQueryObjString = JSON.stringify(query);
+    // console.log(query);
     reqQueryObjString = reqQueryObjString.replace(
       /\b(gt|gte|lt|lte)\b/g,
       (match) => `$${match}`
     );
-    console.log(reqQueryObjString);
-    const toursQueryObj = TourModel.find(
+    // console.log(reqQueryObjString);
+
+    query = TourModel.find(
       JSON.parse(reqQueryObjString)
     );
 
-    const tours = await toursQueryObj;
+    //Sorting
+    // sort('price')
+    if (req.query.sort) {
+      const sortBy = req.query.sort
+        .split(',')
+        .join(' ');
+      console.log(sortBy);
+      query = query.sort(sortBy);
+    }
+    // sort('price ratingsAverage')
+    const tours = await query;
     res.status(200).json({
       status: 'success',
       requestedAt: req.requestTime,
@@ -75,9 +84,10 @@ exports.getAllTours = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: 'fail',
-      message: 'Bad Request',
+      message: err,
     });
   }
 };
